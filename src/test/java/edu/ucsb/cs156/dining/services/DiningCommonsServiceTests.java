@@ -40,8 +40,6 @@ class DiningCommonsServiceTests {
   private static final Boolean HASDININGCAM = false;
   private static final Boolean HASSACKMEAL = false;
   private static final Boolean HASTAKEOUTMEAL = false;
-  private static final Double LATITUDE = 1.0;
-  private static final Double LONGITUDE = 2.0;
 
   @Test
   void get_returns_a_list_of_commons() throws Exception {
@@ -58,10 +56,6 @@ class DiningCommonsServiceTests {
               \"hasDiningCam\": \"%s\",
               \"hasSackMeal\": \"%s\",
               \"hasTakeOutMeal\": \"%s\",
-              \"location\":{
-                \"longitude\": %s,
-                \"latitude\": %s
-              }
             }
             ]
             """,
@@ -69,9 +63,7 @@ class DiningCommonsServiceTests {
             CODE,
             HASDININGCAM,
             HASSACKMEAL,
-            HASTAKEOUTMEAL,
-            LONGITUDE,
-            LATITUDE);
+            HASTAKEOUTMEAL);
 
     DiningCommons expectedCommons =
         DiningCommons.builder()
@@ -80,8 +72,6 @@ class DiningCommonsServiceTests {
             .hasDiningCam(HASDININGCAM)
             .hasSackMeal(HASSACKMEAL)
             .hasTakeOutMeal(HASTAKEOUTMEAL)
-            .latitude(LATITUDE)
-            .longitude(LONGITUDE)
             .build();
 
     this.mockRestServiceServer

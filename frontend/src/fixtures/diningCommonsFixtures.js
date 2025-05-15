@@ -5,8 +5,6 @@ const diningCommonsFixtures = {
     hasSackMeal: false,
     hasTakeoutMeal: false,
     hasDiningCam: true,
-    latitude: 34.409953,
-    longitude: -119.85277,
   },
   oneCommonsDiningCamFalse: {
     name: "Carrillo",
@@ -14,8 +12,6 @@ const diningCommonsFixtures = {
     hasSackMeal: false,
     hasTakeoutMeal: false,
     hasDiningCam: false,
-    latitude: 34.409953,
-    longitude: -119.85277,
   },
   fourCommons: [
     {
@@ -24,8 +20,6 @@ const diningCommonsFixtures = {
       hasSackMeal: false,
       hasTakeoutMeal: false,
       hasDiningCam: true,
-      latitude: 34.409953,
-      longitude: -119.85277,
     },
     {
       name: "De La Guerra",
@@ -33,8 +27,6 @@ const diningCommonsFixtures = {
       hasSackMeal: false,
       hasTakeoutMeal: false,
       hasDiningCam: true,
-      latitude: 34.409811,
-      longitude: -119.845026,
     },
     {
       name: "Ortega",
@@ -42,8 +34,6 @@ const diningCommonsFixtures = {
       hasSackMeal: true,
       hasTakeoutMeal: true,
       hasDiningCam: true,
-      latitude: 34.410987,
-      longitude: -119.84709,
     },
     {
       name: "Portola",
@@ -51,8 +41,6 @@ const diningCommonsFixtures = {
       hasSackMeal: true,
       hasTakeoutMeal: true,
       hasDiningCam: true,
-      latitude: 34.417723,
-      longitude: -119.867427,
     },
   ],
 };
