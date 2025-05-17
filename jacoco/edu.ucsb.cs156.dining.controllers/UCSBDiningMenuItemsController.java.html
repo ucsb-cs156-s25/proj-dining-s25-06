@@ -74,10 +74,10 @@ import jakarta.validation.Valid;
   public ResponseEntity&lt;MenuItem&gt; getMenuItemById(
       @Parameter(description = &quot;ID of the menu item&quot;) @RequestParam Long id
   ) {
-<span class="nc" id="L77">    MenuItem menuItem = menuItemRepository.findById(id)</span>
-<span class="nc" id="L78">        .orElseThrow(() -&gt; new EntityNotFoundException(MenuItem.class, id));</span>
+<span class="fc" id="L77">    MenuItem menuItem = menuItemRepository.findById(id)</span>
+<span class="fc" id="L78">        .orElseThrow(() -&gt; new EntityNotFoundException(MenuItem.class, id));</span>
 
-<span class="nc" id="L80">    return ResponseEntity.ok().body(menuItem);</span>
+<span class="fc" id="L80">    return ResponseEntity.ok().body(menuItem);</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
