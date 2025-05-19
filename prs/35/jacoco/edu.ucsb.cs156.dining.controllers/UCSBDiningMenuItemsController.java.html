@@ -57,27 +57,26 @@ import jakarta.validation.Valid;
 <span class="fc" id="L57">        Optional&lt;MenuItem&gt; exists = menuItemRepository.findByDiningCommonsCodeAndMealCodeAndNameAndStation(diningcommoncode, mealcode, entree.getName(), entree.getStation());</span>
 
 <span class="fc" id="L59">        MenuItem newMenuItem = exists.orElse(new MenuItem());</span>
-          // MenuItem newMenuItem = new MenuItem();
-<span class="fc" id="L61">          newMenuItem.setDiningCommonsCode(diningcommoncode);</span>
-<span class="fc" id="L62">          newMenuItem.setMealCode(mealcode);</span>
-<span class="fc" id="L63">          newMenuItem.setName(entree.getName());</span>
-<span class="fc" id="L64">          newMenuItem.setStation(entree.getStation());</span>
+<span class="fc" id="L60">          newMenuItem.setDiningCommonsCode(diningcommoncode);</span>
+<span class="fc" id="L61">          newMenuItem.setMealCode(mealcode);</span>
+<span class="fc" id="L62">          newMenuItem.setName(entree.getName());</span>
+<span class="fc" id="L63">          newMenuItem.setStation(entree.getStation());</span>
 
-<span class="fc" id="L66">          menuItemRepository.save(newMenuItem);</span>
-<span class="fc" id="L67">          menuitems.add(newMenuItem);</span>
-<span class="fc" id="L68">    }</span>
+<span class="fc" id="L65">          menuItemRepository.save(newMenuItem);</span>
+<span class="fc" id="L66">          menuitems.add(newMenuItem);</span>
+<span class="fc" id="L67">    }</span>
 
-<span class="fc" id="L70">    return ResponseEntity.ok().body(menuitems);</span>
+<span class="fc" id="L69">    return ResponseEntity.ok().body(menuitems);</span>
   }
   @Operation(summary = &quot;Get a single specific menu item by id&quot;)
   @GetMapping(value = &quot;/menuitem&quot;, produces = &quot;application/json&quot;)
   public ResponseEntity&lt;MenuItem&gt; getMenuItemById(
       @Parameter(description = &quot;ID of the menu item&quot;) @RequestParam Long id
   ) {
-<span class="fc" id="L77">    MenuItem menuItem = menuItemRepository.findById(id)</span>
-<span class="fc" id="L78">        .orElseThrow(() -&gt; new EntityNotFoundException(MenuItem.class, id));</span>
+<span class="fc" id="L76">    MenuItem menuItem = menuItemRepository.findById(id)</span>
+<span class="fc" id="L77">        .orElseThrow(() -&gt; new EntityNotFoundException(MenuItem.class, id));</span>
 
-<span class="fc" id="L80">    return ResponseEntity.ok().body(menuItem);</span>
+<span class="fc" id="L79">    return ResponseEntity.ok().body(menuItem);</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
