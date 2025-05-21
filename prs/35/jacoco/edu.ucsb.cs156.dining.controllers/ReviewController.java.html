@@ -102,27 +102,40 @@ import jakarta.validation.Valid;
 <span class="fc" id="L102">        Review review = new Review();</span>
 <span class="fc" id="L103">        review.setDateItemServed(dateItemServed);</span>
 
-        // Ensures content of truly empty and sets to null if so
-<span class="fc bfc" id="L106" title="All 2 branches covered.">        if ((!reviewerComments.trim().isEmpty())) {</span>
-<span class="fc" id="L107">            review.setReviewerComments(reviewerComments);</span>
+<span class="fc" id="L105">        boolean isEmpty = false;</span>
+        String commentsToSet;
+        ModerationStatus statusToSet;
+<span class="fc bfc" id="L108" title="All 4 branches covered.">        if ((reviewerComments == null || reviewerComments.trim().isEmpty())) {</span>
+<span class="fc" id="L109">            isEmpty = true;</span>
         }
-
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (isEmpty) {</span>
+<span class="fc" id="L112">            commentsToSet = null;</span>
+        } else {
+<span class="fc" id="L114">            commentsToSet = reviewerComments;</span>
+        }
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        if (isEmpty) {</span>
+<span class="fc" id="L117">            statusToSet = ModerationStatus.APPROVED;</span>
+        } else {
+<span class="fc" id="L119">            statusToSet = ModerationStatus.AWAITING_REVIEW;</span>
+        }
+<span class="fc" id="L121">        review.setReviewerComments(commentsToSet);</span>
+<span class="fc" id="L122">        review.setStatus(statusToSet);</span>
         // Ensure user inputs rating 1-5
-<span class="fc bfc" id="L111" title="All 4 branches covered.">        if (itemsStars &lt; 1 || itemsStars &gt; 5) {</span>
-<span class="fc" id="L112">            throw new IllegalArgumentException(&quot;Items stars must be between 1 and 5.&quot;);</span>
+<span class="fc bfc" id="L124" title="All 4 branches covered.">        if (itemsStars &lt; 1 || itemsStars &gt; 5) {</span>
+<span class="fc" id="L125">            throw new IllegalArgumentException(&quot;Items stars must be between 1 and 5.&quot;);</span>
         }
 
-<span class="fc" id="L115">        review.setItemsStars(itemsStars);</span>
-
-<span class="fc" id="L117">        MenuItem reviewedItem = menuItemRepository.findById(itemId).orElseThrow(</span>
-<span class="fc" id="L118">                () -&gt; new EntityNotFoundException(MenuItem.class, itemId)</span>
+<span class="fc" id="L128">        review.setItemsStars(itemsStars);</span>
+        
+<span class="fc" id="L130">        MenuItem reviewedItem = menuItemRepository.findById(itemId).orElseThrow(</span>
+<span class="fc" id="L131">                () -&gt; new EntityNotFoundException(MenuItem.class, itemId)</span>
         );
-<span class="fc" id="L120">        review.setItem(reviewedItem);</span>
-<span class="fc" id="L121">        CurrentUser user = getCurrentUser();</span>
-<span class="fc" id="L122">        review.setReviewer(user.getUser());</span>
-<span class="fc" id="L123">        log.info(&quot;reviews={}&quot;, review);</span>
-<span class="fc" id="L124">        review = reviewRepository.save(review);</span>
-<span class="fc" id="L125">        return review;</span>
+<span class="fc" id="L133">        review.setItem(reviewedItem);</span>
+<span class="fc" id="L134">        CurrentUser user = getCurrentUser();</span>
+<span class="fc" id="L135">        review.setReviewer(user.getUser());</span>
+<span class="fc" id="L136">        log.info(&quot;reviews={}&quot;, review);</span>
+<span class="fc" id="L137">        review = reviewRepository.save(review);</span>
+<span class="fc" id="L138">        return review;</span>
     }
 
     /**
@@ -134,9 +147,9 @@ import jakarta.validation.Valid;
     @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
     @GetMapping(&quot;/userReviews&quot;)
     public Iterable&lt;Review&gt; get_all_review_by_user_id(){
-<span class="fc" id="L137">        CurrentUser user = getCurrentUser();</span>
-<span class="fc" id="L138">        Iterable&lt;Review&gt; reviews = reviewRepository.findByReviewer(user.getUser());</span>
-<span class="fc" id="L139">        return reviews;</span>
+<span class="fc" id="L150">        CurrentUser user = getCurrentUser();</span>
+<span class="fc" id="L151">        Iterable&lt;Review&gt; reviews = reviewRepository.findByReviewer(user.getUser());</span>
+<span class="fc" id="L152">        return reviews;</span>
     }
 
     @Operation(summary = &quot;Edit a review&quot;)
@@ -144,74 +157,90 @@ import jakarta.validation.Valid;
     @PutMapping(&quot;/reviewer&quot;)
     public Review editReview(@Parameter Long id, @RequestBody @Valid EditedReview incoming) {
 
-<span class="fc" id="L147">        Review oldReview = reviewRepository.findById(id).orElseThrow(</span>
-<span class="fc" id="L148">                () -&gt; new EntityNotFoundException(Review.class, id)</span>
+<span class="fc" id="L160">        Review oldReview = reviewRepository.findById(id).orElseThrow(</span>
+<span class="fc" id="L161">                () -&gt; new EntityNotFoundException(Review.class, id)</span>
         );
-<span class="fc" id="L150">        User current = getCurrentUser().getUser();</span>
-<span class="fc bfc" id="L151" title="All 2 branches covered.">        if(current.getId() != oldReview.getReviewer().getId()) {</span>
-<span class="fc" id="L152">            throw new AccessDeniedException(&quot;No permission to edit review&quot;);</span>
+<span class="fc" id="L163">        User current = getCurrentUser().getUser();</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">        if(current.getId() != oldReview.getReviewer().getId()) {</span>
+<span class="fc" id="L165">            throw new AccessDeniedException(&quot;No permission to edit review&quot;);</span>
         }
 
-<span class="fc bfc" id="L155" title="All 4 branches covered.">        if(incoming.getItemStars() &lt; 1 || incoming.getItemStars() &gt; 5) {</span>
-<span class="fc" id="L156">            throw new IllegalArgumentException(&quot;Items stars must be between 1 and 5.&quot;);</span>
+<span class="fc bfc" id="L168" title="All 4 branches covered.">        if(incoming.getItemStars() &lt; 1 || incoming.getItemStars() &gt; 5) {</span>
+<span class="fc" id="L169">            throw new IllegalArgumentException(&quot;Items stars must be between 1 and 5.&quot;);</span>
         }else{
-<span class="fc" id="L158">            oldReview.setItemsStars(incoming.getItemStars());</span>
+<span class="fc" id="L171">            oldReview.setItemsStars(incoming.getItemStars());</span>
         }
 
-<span class="fc bfc" id="L161" title="All 4 branches covered.">        if (incoming.getReviewerComments() != null &amp;&amp;!incoming.getReviewerComments().trim().isEmpty()) {</span>
-<span class="fc" id="L162">            oldReview.setReviewerComments(incoming.getReviewerComments());</span>
+<span class="fc bfc" id="L174" title="All 4 branches covered.">        if (incoming.getReviewerComments() != null &amp;&amp;!incoming.getReviewerComments().trim().isEmpty()) {</span>
+<span class="fc" id="L175">            oldReview.setReviewerComments(incoming.getReviewerComments());</span>
+<span class="fc" id="L176">            oldReview.setStatus(ModerationStatus.AWAITING_REVIEW);</span>
         }else{
-<span class="fc" id="L164">            oldReview.setReviewerComments(null);</span>
+<span class="fc" id="L178">            oldReview.setReviewerComments(null);</span>
+<span class="fc" id="L179">            oldReview.setStatus(ModerationStatus.APPROVED);</span>
         }
 
-<span class="fc" id="L167">        oldReview.setDateItemServed(incoming.getDateItemServed());</span>
+<span class="fc" id="L182">        oldReview.setDateItemServed(incoming.getDateItemServed());</span>
 
-<span class="fc" id="L169">        oldReview.setStatus(ModerationStatus.AWAITING_REVIEW);</span>
-<span class="fc" id="L170">        oldReview.setModeratorComments(null);</span>
+<span class="fc" id="L184">        oldReview.setModeratorComments(null);</span>
 
-<span class="fc" id="L172">        Review review = reviewRepository.save(oldReview);</span>
+<span class="fc" id="L186">        Review review = reviewRepository.save(oldReview);</span>
 
-<span class="fc" id="L174">        return review;</span>
+<span class="fc" id="L188">        return review;</span>
     }
 
     @Operation(summary = &quot;Delete a review&quot;)
     @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
     @DeleteMapping(&quot;/reviewer&quot;)
     public Object deleteReview(@Parameter Long id) {
-<span class="fc" id="L181">        Review review = reviewRepository.findById(id).orElseThrow(</span>
-<span class="fc" id="L182">                () -&gt; new EntityNotFoundException(Review.class, id)</span>
+<span class="fc" id="L195">        Review review = reviewRepository.findById(id).orElseThrow(</span>
+<span class="fc" id="L196">                () -&gt; new EntityNotFoundException(Review.class, id)</span>
         );
 
-<span class="fc" id="L185">        User current = getCurrentUser().getUser();</span>
-<span class="fc bfc" id="L186" title="All 4 branches covered.">        if(current.getId() != review.getReviewer().getId() &amp;&amp; !current.getAdmin()) {</span>
-<span class="fc" id="L187">            throw new AccessDeniedException(&quot;No permission to delete review&quot;);</span>
+<span class="fc" id="L199">        User current = getCurrentUser().getUser();</span>
+<span class="fc bfc" id="L200" title="All 4 branches covered.">        if(current.getId() != review.getReviewer().getId() &amp;&amp; !current.getAdmin()) {</span>
+<span class="fc" id="L201">            throw new AccessDeniedException(&quot;No permission to delete review&quot;);</span>
         }
 
-<span class="fc" id="L190">        reviewRepository.delete(review);</span>
-<span class="fc" id="L191">        return genericMessage(&quot;Review with id %s deleted&quot;.formatted(id));</span>
+<span class="fc" id="L204">        reviewRepository.delete(review);</span>
+<span class="fc" id="L205">        return genericMessage(&quot;Review with id %s deleted&quot;.formatted(id));</span>
     }
 
     @Operation(summary = &quot;Moderate a review&quot;)
     @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
     @PutMapping(&quot;/moderate&quot;)
     public Review moderateReview(@Parameter Long id, @Parameter ModerationStatus status, @Parameter String moderatorComments) {
-<span class="fc" id="L198">        Review review = reviewRepository.findById(id).orElseThrow(</span>
-<span class="fc" id="L199">                () -&gt; new EntityNotFoundException(Review.class, id)</span>
+<span class="fc" id="L212">        Review review = reviewRepository.findById(id).orElseThrow(</span>
+<span class="fc" id="L213">                () -&gt; new EntityNotFoundException(Review.class, id)</span>
         );
 
-<span class="fc" id="L202">        review.setModeratorComments(moderatorComments);</span>
-<span class="fc" id="L203">        review.setStatus(status);</span>
+<span class="fc" id="L216">        review.setModeratorComments(moderatorComments);</span>
+<span class="fc" id="L217">        review.setStatus(status);</span>
 
-<span class="fc" id="L205">        review = reviewRepository.save(review);</span>
-<span class="fc" id="L206">        return review;</span>
+<span class="fc" id="L219">        review = reviewRepository.save(review);</span>
+<span class="fc" id="L220">        return review;</span>
     }
 
     @Operation(summary = &quot;See reviews that need moderation&quot;)
     @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
     @GetMapping(&quot;/needsmoderation&quot;)
     public Iterable&lt;Review&gt; needsmoderation() {
-<span class="fc" id="L213">        Iterable&lt;Review&gt; reviewsList = reviewRepository.findByStatus(ModerationStatus.AWAITING_REVIEW);</span>
-<span class="fc" id="L214">        return reviewsList;</span>
+<span class="fc" id="L227">        Iterable&lt;Review&gt; reviewsList = reviewRepository.findByStatus(ModerationStatus.AWAITING_REVIEW);</span>
+<span class="fc" id="L228">        return reviewsList;</span>
     }
+    @Operation(summary = &quot;Get a specific single review ID&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+    @GetMapping(&quot;/get&quot;)
+    public Review getReviewByID(@Parameter Long id) {
+<span class="fc" id="L234">        Review review = reviewRepository.findById(id).orElseThrow(</span>
+<span class="fc" id="L235">                () -&gt; new EntityNotFoundException(Review.class, id)</span>
+        );
+
+<span class="fc" id="L238">        User current = getCurrentUser().getUser();</span>
+<span class="fc bfc" id="L239" title="All 4 branches covered.">        if(current.getId() != review.getReviewer().getId() &amp;&amp; !current.getAdmin()) {</span>
+<span class="fc" id="L240">            throw new AccessDeniedException(&quot;Only user who made this review or admin can get id&quot;);</span>
+        }
+<span class="fc" id="L242">        return review;</span>
+    }
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
