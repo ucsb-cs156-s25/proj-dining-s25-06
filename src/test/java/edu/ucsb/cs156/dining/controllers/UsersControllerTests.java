@@ -319,4 +319,140 @@ public class UsersControllerTests extends ControllerTestCase {
       // assert
       assertEquals("Chipo", user.getAlias());
   }
+  @WithMockUser(roles = { "ADMIN", "USER" })
+  @Test
+  public void admin_can_toggle_admin() throws Exception{
+     User user1 = User.builder().email("joegaucho@ucsb.edu").id(17L).admin(false).build();
+     when(userRepository.findById(eq(17L))).thenReturn(Optional.of(user1));
+     MvcResult response = mockMvc.perform(post("/api/admin/users/toggleAdmin?id=17").with(csrf()))
+             .andExpect(status().isOk()).andReturn();
+    
+    verify(userRepository, times(1)).findById(17L);
+    Map<String, Object> json = responseToJson(response);
+    assertEquals("User with id 17 has toggled admin status to true", json.get("message"));
+  }
+
+  @WithMockUser(roles = { "ADMIN", "USER" })
+  @Test
+  public void admin_can_toggle_admin_flip() throws Exception{
+     User user1 = User.builder().email("joegaucho@ucsb.edu").id(17L).admin(true).build();
+     when(userRepository.findById(eq(17L))).thenReturn(Optional.of(user1));
+     MvcResult response = mockMvc.perform(post("/api/admin/users/toggleAdmin?id=17").with(csrf()))
+             .andExpect(status().isOk()).andReturn();
+    
+    verify(userRepository, times(1)).findById(17L);
+    Map<String, Object> json = responseToJson(response);
+    assertEquals("User with id 17 has toggled admin status to false", json.get("message"));
+  }
+
+  @WithMockUser(roles = { "ADMIN", "USER" })
+  @Test
+  public void admin_cant_toggle_admin_nonexistent() throws Exception{
+     User user1 = User.builder().email("joegaucho@ucsb.edu").id(17L).build();
+     when(userRepository.findById(eq(17L))).thenReturn(Optional.of(user1));
+     MvcResult response = mockMvc.perform(post("/api/admin/users/toggleAdmin?id=15").with(csrf()))
+             .andExpect(status().is(404)).andReturn();
+    
+    verify(userRepository, times(1)).findById(15L);
+    Map<String, Object> json = responseToJson(response);
+    assertEquals("User with id 15 not found", json.get("message"));
+  }
+
+  @WithMockUser(roles = { "ADMIN", "USER" })
+  @Test
+  public void admin_can_toggle_professor() throws Exception{
+     User user1 = User.builder().email("joegaucho@ucsb.edu").id(17L).professor(false).build();
+     when(userRepository.findById(eq(17L))).thenReturn(Optional.of(user1));
+     MvcResult response = mockMvc.perform(post("/api/admin/users/toggleProfessor?id=17").with(csrf()))
+             .andExpect(status().isOk()).andReturn();
+    
+    verify(userRepository, times(1)).findById(17L);
+    Map<String, Object> json = responseToJson(response);
+    assertEquals("User with id 17 has toggled professor status to true", json.get("message"));
+  }
+
+  @WithMockUser(roles = { "ADMIN", "USER" })
+  @Test
+  public void admin_can_toggle_professor_flip() throws Exception{
+     User user1 = User.builder().email("joegaucho@ucsb.edu").id(17L).professor(true).build();
+     when(userRepository.findById(eq(17L))).thenReturn(Optional.of(user1));
+     MvcResult response = mockMvc.perform(post("/api/admin/users/toggleProfessor?id=17").with(csrf()))
+             .andExpect(status().isOk()).andReturn();
+    
+    verify(userRepository, times(1)).findById(17L);
+    Map<String, Object> json = responseToJson(response);
+    assertEquals("User with id 17 has toggled professor status to false", json.get("message"));
+  }
+
+  @WithMockUser(roles = { "ADMIN", "USER" })
+  @Test
+  public void admin_cant_toggle_professor_nonexistent() throws Exception{
+     User user1 = User.builder().email("joegaucho@ucsb.edu").id(17L).build();
+     when(userRepository.findById(eq(17L))).thenReturn(Optional.of(user1));
+     MvcResult response = mockMvc.perform(post("/api/admin/users/toggleProfessor?id=15").with(csrf()))
+             .andExpect(status().is(404)).andReturn();
+    
+    verify(userRepository, times(1)).findById(15L);
+    Map<String, Object> json = responseToJson(response);
+    assertEquals("User with id 15 not found", json.get("message"));
+  }
+
+  @WithMockUser(roles = { "ADMIN", "USER" })
+  @Test
+  public void admin_can_toggle_student() throws Exception{
+     User user1 = User.builder().email("joegaucho@ucsb.edu").id(17L).student(false).build();
+     when(userRepository.findById(eq(17L))).thenReturn(Optional.of(user1));
+     MvcResult response = mockMvc.perform(post("/api/admin/users/toggleStudent?id=17").with(csrf()))
+             .andExpect(status().isOk()).andReturn();
+    
+    verify(userRepository, times(1)).findById(17L);
+    Map<String, Object> json = responseToJson(response);
+    assertEquals("User with id 17 has toggled student status to true", json.get("message"));
+  }
+  @WithMockUser(roles = { "ADMIN", "USER" })
+  @Test
+  public void admin_can_toggle_student_flip() throws Exception{
+     User user1 = User.builder().email("joegaucho@ucsb.edu").id(17L).student(true).build();
+     when(userRepository.findById(eq(17L))).thenReturn(Optional.of(user1));
+     MvcResult response = mockMvc.perform(post("/api/admin/users/toggleStudent?id=17").with(csrf()))
+             .andExpect(status().isOk()).andReturn();
+    
+    verify(userRepository, times(1)).findById(17L);
+    Map<String, Object> json = responseToJson(response);
+    assertEquals("User with id 17 has toggled student status to false", json.get("message"));
+  }
+
+  @WithMockUser(roles = { "ADMIN", "USER" })
+  @Test
+  public void admin_cant_toggle_student_nonexistent() throws Exception{
+     User user1 = User.builder().email("joegaucho@ucsb.edu").id(17L).build();
+     when(userRepository.findById(eq(17L))).thenReturn(Optional.of(user1));
+     MvcResult response = mockMvc.perform(post("/api/admin/users/toggleStudent?id=15").with(csrf()))
+             .andExpect(status().is(404)).andReturn();
+    
+    verify(userRepository, times(1)).findById(15L);
+    Map<String, Object> json = responseToJson(response);
+    assertEquals("User with id 15 not found", json.get("message"));
+  }
+
+  @WithMockUser(roles = { "USER" })
+  @Test
+  public void non_admin_can_get_all_professors() throws Exception{
+    User professor = User.builder().id(1L).professor(true).email("phtcon@ucsb.edu").fullName("Phill Conrad").familyName("Conrad").build();
+    Iterable<User> professors = Arrays.asList(professor);
+    when(userRepository.professorIsTrue()).thenReturn(professors);
+    MvcResult response = mockMvc.perform(get("/api/admin/users/professors").with(csrf()))
+             .andExpect(status().isOk()).andReturn();
+    verify(userRepository, times(1)).professorIsTrue();
+    String responseString = response.getResponse().getContentAsString();
+    assertTrue(responseString.contains("Phill Conrad"));
+    assertTrue(responseString.contains("1"));
+    assertFalse(responseString.contains("email"));
+
+  }
+
+
+
 }
+
+

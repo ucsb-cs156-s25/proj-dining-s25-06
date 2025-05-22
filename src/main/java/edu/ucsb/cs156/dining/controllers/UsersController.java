@@ -128,4 +128,28 @@ public class UsersController extends ApiController {
 
         return user;
     }
+    @Operation(summary = "Toggle the admin field")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/toggleAdmin")
+    public Object toggleAdmin( @Parameter(name = "id", description = "Long, id number of user to toggle their admin field", example = "1", required = true) @RequestParam Long id){
+        User user = userRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException(User.class, id));
+
+        user.setAdmin(!user.getAdmin());
+        userRepository.save(user);
+        return genericMessage("User with id %s has toggled admin status to %s".formatted(id, user.getAdmin()));
+    }
+
+    @Operation(summary = "Toggle the professor field")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/toggleProfessor")
+    public Object toggleProfessor( @Parameter(name = "id", description = "Long, id number of user to toggle their professor field", example = "1", required = true) @RequestParam Long id){
+        User user = userRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException(User.class, id));
+
+        user.setProfessor(!user.getProfessor());
+        userRepository.save(user);
+        return genericMessage("User with id %s has toggled professor status to %s".formatted(id, user.getProfessor()));
+    }
+    //modify how current users are saved 
 }

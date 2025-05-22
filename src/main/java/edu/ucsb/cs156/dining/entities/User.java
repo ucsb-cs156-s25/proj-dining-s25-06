@@ -37,7 +37,10 @@ public class User {
  private boolean emailVerified;
  private String locale;
  private String hostedDomain;
+
  private boolean admin;
+ private boolean moderator; //might need to change this to @bulder deault = false for all my entities.
+
  private String alias;
  private String proposedAlias;
  @Enumerated(EnumType.STRING)

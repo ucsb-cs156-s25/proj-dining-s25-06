@@ -122,6 +122,9 @@ public class SecurityConfig {
           if (email.endsWith("@ucsb.edu")) {
             mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
           }
+          if(getModerator(email)){
+            mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_MODERATOR"));
+          }
         }
 
       });
@@ -145,6 +148,11 @@ public class SecurityConfig {
     Optional<User> u = userRepository.findByEmail(email);
     return u.isPresent() && u.get().getAdmin();
   }
+  public boolean getModerator(String email) {
+    Optional<User> u = userRepository.findByEmail(email);
+    return u.isPresent() && u.get().getModerator();
+  } 
+
 }
 
 final class SpaCsrfTokenRequestHandler extends CsrfTokenRequestAttributeHandler {
