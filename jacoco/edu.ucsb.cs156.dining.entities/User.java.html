@@ -2,6 +2,7 @@
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import edu.ucsb.cs156.dining.statuses.ModerationStatus;
 import jakarta.persistence.*;
@@ -37,12 +38,16 @@ public class User {
  private boolean emailVerified;
  private String locale;
  private String hostedDomain;
- private boolean admin;
  private String alias;
  private String proposedAlias;
  @Enumerated(EnumType.STRING)
  private ModerationStatus status;
  private LocalDate dateApproved;
+ 
+ @Builder.Default
+ private boolean admin=false;
+ @Builder.Default
+ private boolean moderator=false;
 
  @ToString.Exclude
  @OneToMany(mappedBy=&quot;reviewer&quot;)
@@ -50,10 +55,10 @@ public class User {
  private List&lt;Review&gt; reviews;
  
  public String getAlias() {
-<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (this.alias == null) {</span>
-<span class="fc" id="L54">            this.alias = &quot;Anonymous User&quot;; </span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        if (this.alias == null) {</span>
+<span class="fc" id="L59">            this.alias = &quot;Anonymous User&quot;; </span>
         }
-<span class="fc" id="L56">        return this.alias;</span>
+<span class="fc" id="L61">        return this.alias;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
