@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -167,14 +167,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -216,7 +216,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -241,7 +241,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -255,20 +255,20 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 &nbsp;
-function Review({ initialContents, submitAction, buttonLabel = "Create" }) {
+function <span class="fstat-no" title="function not covered" >Review(</span>{ initialContents, submitAction, buttonLabel = <span class="branch-0 cbranch-no" title="branch not covered" >"Create" </span>}) {
   // Stryker disable all
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm({ defaultValues: initialContents || {} });
+  } = <span class="cstat-no" title="statement not covered" >useForm({ defaultValues: initialContents || {} });</span>
   // Stryker restore all
 &nbsp;
-  const navigate = useNavigate();
+  const navigate = <span class="cstat-no" title="statement not covered" >useNavigate();</span>
 &nbsp;
-  const testIdPrefix = "Review";
+  const testIdPrefix = <span class="cstat-no" title="statement not covered" >"Review";</span>
 &nbsp;
-  return (
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;Form onSubmit={handleSubmit(submitAction)}&gt;
       &lt;Form.Group className="mb-3"&gt;
         &lt;Form.Label htmlFor="reviewerComments"&gt;Reviewer Comments&lt;/Form.Label&gt;
@@ -309,8 +309,8 @@ function Review({ initialContents, submitAction, buttonLabel = "Create" }) {
       &lt;Form.Group className="mb-3"&gt;
         &lt;Form.Label&gt;Rating&lt;/Form.Label&gt;
         &lt;div&gt;
-          {[1, 2, 3, 4, 5].map((star) =&gt; (
-            &lt;Form.Check
+          {[1, 2, 3, 4, 5].map(<span class="fstat-no" title="function not covered" >(s</span>tar) =&gt; (
+<span class="cstat-no" title="statement not covered" >            &lt;Form.Check</span>
               inline
               key={star}
               type="radio"
@@ -335,7 +335,7 @@ function Review({ initialContents, submitAction, buttonLabel = "Create" }) {
       &lt;/Button&gt;
       &lt;Button
         variant="Secondary"
-        onClick={() =&gt; navigate(-1)}
+        onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >navigate(-1)}</span>
         data-testid={testIdPrefix + "-cancel"}
       &gt;
         Cancel
@@ -352,7 +352,7 @@ export default Review;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-27T03:01:57.446Z
+                at 2025-05-27T03:08:25.183Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
